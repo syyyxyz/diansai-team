@@ -2,7 +2,8 @@ ENTRY(Reset_Handler)
 
 MEMORY
 {
-    FLASH (rx)  : ORIGIN = 0x08000000, LENGTH = 512K
+    /* Sector 7 (0x08060000..0x0807FFFF) stores bypass calibration. */
+    FLASH (rx)  : ORIGIN = 0x08000000, LENGTH = 384K
     RAM   (xrw) : ORIGIN = 0x20000000, LENGTH = 128K
 }
 

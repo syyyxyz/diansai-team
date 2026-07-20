@@ -1,5 +1,6 @@
-LR_IROM1 0x08000000 0x00080000  {
-  ER_IROM1 0x08000000 0x00080000  {
+; Sector 7 (0x08060000..0x0807FFFF) stores bypass calibration.
+LR_IROM1 0x08000000 0x00060000  {
+  ER_IROM1 0x08000000 0x00060000  {
     *.o (RESET, +First)
     *(InRoot$$Sections)
     .ANY (+RO)

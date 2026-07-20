@@ -19,8 +19,14 @@
 #define GPIOA_OTYPER        REG32(GPIOA_BASE + 0x04UL)
 #define GPIOA_OSPEEDR       REG32(GPIOA_BASE + 0x08UL)
 #define GPIOA_PUPDR         REG32(GPIOA_BASE + 0x0CUL)
+#define GPIOA_IDR           REG32(GPIOA_BASE + 0x10UL)
 #define GPIOA_BSRR          REG32(GPIOA_BASE + 0x18UL)
 #define GPIOA_AFRL          REG32(GPIOA_BASE + 0x20UL)
+
+#define FLASH_BASE          0x40023C00UL
+#define FLASH_KEYR          REG32(FLASH_BASE + 0x04UL)
+#define FLASH_SR            REG32(FLASH_BASE + 0x0CUL)
+#define FLASH_CR            REG32(FLASH_BASE + 0x10UL)
 
 #define GPIOB_MODER         REG32(GPIOB_BASE + 0x00UL)
 #define GPIOB_OTYPER        REG32(GPIOB_BASE + 0x04UL)
@@ -72,5 +78,20 @@
 #define SPI_SR_RXNE         (1UL << 0)
 #define SPI_SR_TXE          (1UL << 1)
 #define SPI_SR_BSY          (1UL << 7)
+
+#define FLASH_SR_EOP        (1UL << 0)
+#define FLASH_SR_OPERR      (1UL << 1)
+#define FLASH_SR_WRPERR     (1UL << 4)
+#define FLASH_SR_PGAERR     (1UL << 5)
+#define FLASH_SR_PGPERR     (1UL << 6)
+#define FLASH_SR_PGSERR     (1UL << 7)
+#define FLASH_SR_BSY        (1UL << 16)
+
+#define FLASH_CR_PG         (1UL << 0)
+#define FLASH_CR_SER        (1UL << 1)
+#define FLASH_CR_SNB_SHIFT  3U
+#define FLASH_CR_PSIZE_WORD (2UL << 8)
+#define FLASH_CR_STRT       (1UL << 16)
+#define FLASH_CR_LOCK       (1UL << 31)
 
 #endif

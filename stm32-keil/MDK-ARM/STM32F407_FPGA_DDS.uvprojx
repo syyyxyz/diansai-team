@@ -249,7 +249,7 @@
               <IROM>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x80000</Size>
+                <Size>0x60000</Size>
               </IROM>
               <XRAM>
                 <Type>0</Type>
@@ -274,7 +274,7 @@
               <OCR_RVCT4>
                 <Type>1</Type>
                 <StartAddress>0x8000000</StartAddress>
-                <Size>0x80000</Size>
+                <Size>0x60000</Size>
               </OCR_RVCT4>
               <OCR_RVCT5>
                 <Type>1</Type>
@@ -406,6 +406,16 @@
               <FilePath>..\Src\fpga_dds.c</FilePath>
             </File>
             <File>
+              <FileName>model_learning.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\model_learning.c</FilePath>
+            </File>
+            <File>
+              <FileName>calibration_store.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\calibration_store.c</FilePath>
+            </File>
+            <File>
               <FileName>oled_ssd1306.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\oled_ssd1306.c</FilePath>
@@ -419,6 +429,16 @@
               <FileName>fpga_dds.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Inc\fpga_dds.h</FilePath>
+            </File>
+            <File>
+              <FileName>model_learning.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Inc\model_learning.h</FilePath>
+            </File>
+            <File>
+              <FileName>calibration_store.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Inc\calibration_store.h</FilePath>
             </File>
             <File>
               <FileName>stm32f407_min.h</FileName>

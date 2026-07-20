@@ -21,6 +21,8 @@ LDFLAGS := $(CPU_FLAGS) -nostartfiles -nostdlib -T$(LINKER_SCRIPT) \
 C_SOURCES := \
 	Src/main.c \
 	Src/fpga_dds.c \
+	Src/model_learning.c \
+	Src/calibration_store.c \
 	Src/oled_ssd1306.c \
 	Src/system_stm32f407_min.c
 ASM_SOURCE := GCC/startup_stm32f407_gcc.s
