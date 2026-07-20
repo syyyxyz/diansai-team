@@ -1,0 +1,74 @@
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name DEVICE EP4CE10F17C8
+set_global_assignment -name TOP_LEVEL_ENTITY dds
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 20.1
+set_global_assignment -name LAST_QUARTUS_VERSION "20.1.0 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name NOMINAL_CORE_SUPPLY_VOLTAGE 1.2V
+set_global_assignment -name VHDL_FILE dds.vhd
+set_global_assignment -name VHDL_FILE adc_capture.vhd
+set_global_assignment -name VHDL_FILE adc_phase_ref.vhd
+set_global_assignment -name VHDL_FILE iq_demod.vhd
+set_global_assignment -name VHDL_FILE measure_ctrl.vhd
+set_global_assignment -name VHDL_FILE spi_measure_if.vhd
+set_global_assignment -name VERILOG_FILE pll_125m.v
+set_global_assignment -name QIP_FILE ip/sine_rom.qip
+set_global_assignment -name SEARCH_PATH ip
+set_global_assignment -name SDC_FILE dds.sdc
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+
+# Existing E10/AD9708 assignments are preserved. The three former key pins are
+# repurposed as the STM32 SPI control interface.
+set_location_assignment PIN_E1 -to clk
+set_location_assignment PIN_B8 -to rst_n
+set_location_assignment PIN_A7 -to spi_cs_n
+set_location_assignment PIN_A6 -to spi_sck
+set_location_assignment PIN_B7 -to spi_mosi
+set_location_assignment PIN_A5 -to spi_miso
+set_location_assignment PIN_R14 -to da_clk
+set_location_assignment PIN_N13 -to da_data[7]
+set_location_assignment PIN_N12 -to da_data[6]
+set_location_assignment PIN_M11 -to da_data[5]
+set_location_assignment PIN_P11 -to da_data[4]
+set_location_assignment PIN_L10 -to da_data[3]
+set_location_assignment PIN_K8 -to da_data[2]
+set_location_assignment PIN_P9 -to da_data[1]
+set_location_assignment PIN_L8 -to da_data[0]
+
+# AD9280 assignments copied from the verified dds(1).qsf reference project.
+set_location_assignment PIN_T12 -to ad_clk_out
+set_location_assignment PIN_T13 -to ad_data[7]
+set_location_assignment PIN_R13 -to ad_data[6]
+set_location_assignment PIN_T14 -to ad_data[5]
+set_location_assignment PIN_T15 -to ad_data[4]
+set_location_assignment PIN_R16 -to ad_data[3]
+set_location_assignment PIN_P16 -to ad_data[2]
+set_location_assignment PIN_N15 -to ad_data[1]
+set_location_assignment PIN_N16 -to ad_data[0]
+
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to rst_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi_cs_n
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi_sck
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi_mosi
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to spi_miso
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to da_clk
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to da_data[*]
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ad_clk_out
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ad_data[*]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to spi_cs_n
+set_instance_assignment -name CURRENT_STRENGTH_NEW 8MA -to da_clk
+set_instance_assignment -name CURRENT_STRENGTH_NEW 8MA -to da_data[*]
+set_instance_assignment -name SLEW_RATE 2 -to da_clk
+set_instance_assignment -name SLEW_RATE 2 -to da_data[*]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 8MA -to ad_clk_out
+set_instance_assignment -name SLEW_RATE 2 -to ad_clk_out
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to da_data[*]
+
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
