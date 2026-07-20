@@ -1,0 +1,2 @@
+Firmware/*.hex text eol=lf
+Firmware/*.bin binary

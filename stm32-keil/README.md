@@ -31,9 +31,13 @@ OLED 沿用 `FFt` 工程的 SSD1306 I2C 接法：PB6=SCL、PB7=SDA，7 位地址
 - `I` / `Q`：FPGA 返回的 64 位同步检波累加值
 - `N`：实际累计的 AD 样本数
 - `ADC`：测量期间的最小/最大 8 位 AD 码
-- `R`：`abs(Q) / abs(I)` 的百分比，最大显示 999%
+- `L`：正弦环回的正交泄漏 `abs(I) / abs(Q)`，最大显示 999%
 - `S:BDVCOP`：依次代表 busy、done、valid、clip、overflow、protocol error；未置位显示 `-`
-- `H1:PASS`：结果有效、无削顶/溢出/协议错误、AD 有动态范围且 `R <= 20%`
+- `H1:PASS`：结果有效、无削顶/溢出/协议错误、AD 有动态范围且 `L <= 20%`
+
+FPGA 的 `I` 使用余弦参考，`Q` 使用正弦参考；DA 输出来自同一正弦 ROM，
+所以直连环回应当由 `Q` 主导、`I` 接近零。`Q` 的正负只反映 AD/DA 模拟链路
+和参考方向的固定极性，后续测量未知网络时应使用直连结果作复数基准校准。
 
 `H1:PASS` 只用于这一步的通信和粗略相位环回检查，不代表幅频增益已经标定。DA、AD 模块自身增益和固定延迟需在后续直通校准中消除。
 
@@ -47,7 +51,17 @@ OLED 沿用 `FFt` 工程的 SSD1306 I2C 接法：PB6=SCL、PB7=SDA，7 位地址
 
 ## 编译与下载
 
-用 Keil MDK 打开 `MDK-ARM/STM32F407_FPGA_DDS.uvprojx`，选择 `STM32F407_FPGA_DDS` target 后 Rebuild，再用 ST-Link 下载。工程使用 ARM Compiler 5/C99，芯片配置为 STM32F407VETx。
+可以直接用 ST-Link 烧录仓库中已经生成的：
+
+- `Firmware/STM32F407_FPGA_DDS.hex`（推荐，包含 Flash 地址）
+- `Firmware/STM32F407_FPGA_DDS.bin`（烧录起始地址必须设为 `0x08000000`）
+
+也可以用 Keil MDK 打开 `MDK-ARM/STM32F407_FPGA_DDS.uvprojx`，选择
+`STM32F407_FPGA_DDS` target 后 Rebuild。工程使用 ARM Compiler 5/C99，芯片配置为
+STM32F407VETx。
+
+Linux 下可在本目录运行 `make clean all`，使用 `arm-none-eabi-gcc` 从当前源码
+重新生成同名 HEX/BIN；中间文件位于未跟踪的 `build-gcc/`。
 
 核心源码：
 

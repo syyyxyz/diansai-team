@@ -51,24 +51,28 @@ static uint64_t signed_magnitude(int64_t value)
     return (uint64_t)value;
 }
 
-static uint32_t quadrature_ratio_percent(const fpga_measure_result_t *result)
+static uint32_t loopback_leakage_percent(const fpga_measure_result_t *result)
 {
     uint64_t i_magnitude = signed_magnitude(result->i_accumulator);
     uint64_t q_magnitude = signed_magnitude(result->q_accumulator);
     uint64_t whole;
     uint64_t remainder;
 
-    if (i_magnitude == 0ULL) {
+    /*
+     * The DDS output and ref_sin both come from the sine ROM.  A direct
+     * loopback is therefore Q-dominant; I is the orthogonal leakage term.
+     */
+    if (q_magnitude == 0ULL) {
         return 999UL;
     }
 
-    whole = q_magnitude / i_magnitude;
+    whole = i_magnitude / q_magnitude;
     if (whole >= 10ULL) {
         return 999UL;
     }
-    remainder = q_magnitude % i_magnitude;
+    remainder = i_magnitude % q_magnitude;
     return (uint32_t)(whole * 100ULL +
-                      (remainder * 100ULL) / i_magnitude);
+                      (remainder * 100ULL) / q_magnitude);
 }
 
 static const char *error_text(fpga_dds_status_t error)
@@ -120,7 +124,7 @@ static void display_result(uint8_t oled_ready,
                            const fpga_measure_result_t *result)
 {
     char status_text[] = "S:------";
-    uint32_t ratio = quadrature_ratio_percent(result);
+    uint32_t leakage = loopback_leakage_percent(result);
     uint8_t h1_pass;
 
     if (oled_ready == 0U) {
@@ -144,7 +148,7 @@ static void display_result(uint8_t oled_ready,
                                   FPGA_MEASURE_STATUS_VALID)) &&
                (result->sample_count != 0UL) &&
                (result->adc_max > result->adc_min) &&
-               (ratio <= 20UL)) ? 1U : 0U;
+               (leakage <= 20UL)) ? 1U : 0U;
 
     OLED_Clear();
     OLED_Print(0U, 0U, "FPGA RX LOOP H=1");
@@ -163,8 +167,8 @@ static void display_result(uint8_t oled_ready,
     OLED_PrintU32(4U, 6U, result->adc_min);
     OLED_Print(7U, 6U, "-");
     OLED_PrintU32(8U, 6U, result->adc_max);
-    OLED_Print(12U, 6U, "R:");
-    OLED_PrintU32(14U, 6U, ratio);
+    OLED_Print(12U, 6U, "L:");
+    OLED_PrintU32(14U, 6U, leakage);
     OLED_Print(17U, 6U, "%");
     OLED_Print(0U, 7U, status_text);
     OLED_Print(9U, 7U, "H1:");
