@@ -1,7 +1,0 @@
-db/
-incremental_db/
-greybox_tmp/
-output_files/
-work-obj*.cf
-*.qws
-qmegawiz_errors_log.txt
